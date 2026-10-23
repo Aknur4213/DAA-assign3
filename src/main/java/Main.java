@@ -1,17 +1,18 @@
 
 import daa.graph.Edge;
 import daa.graph.Graph;
+import daa.graph.GraphReader;
+
+import java.io.FileNotFoundException;
 
 public class Main {
-    public static void main(String[] args) {
 
-        Graph graph = new Graph(4, false);
+    public static void main(String[] args) throws FileNotFoundException {
 
-        graph.addEdge(0, 1, 4);
-        graph.addEdge(1, 2, 2);
-        graph.addEdge(0, 3, 7);
+        Graph graph = GraphReader.read("data/connected.txt");
 
         for (int v = 0; v < graph.size(); v++) {
+
             System.out.print("Vertex " + v + ": ");
 
             for (Edge edge : graph.neighbors(v)) {

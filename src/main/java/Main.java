@@ -1,7 +1,4 @@
-
-import daa.graph.Edge;
-import daa.graph.Graph;
-import daa.graph.GraphReader;
+import daa.algorithms.DSU;
 
 import java.io.FileNotFoundException;
 
@@ -9,17 +6,23 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        Graph graph = GraphReader.read("data/connected.txt");
 
-        for (int v = 0; v < graph.size(); v++) {
+        DSU dsu = new DSU(5);
 
-            System.out.print("Vertex " + v + ": ");
+        System.out.println(dsu.components());
 
-            for (Edge edge : graph.neighbors(v)) {
-                System.out.print(edge.to + "(" + edge.weight + ") ");
-            }
+        dsu.union(0, 1);
+        dsu.union(1, 2);
+        dsu.union(3, 4);
 
-            System.out.println();
-        }
+        System.out.println(dsu.components());
+        System.out.println(dsu.find(0) == dsu.find(2));
+        System.out.println(dsu.find(0) == dsu.find(4));
+
+        dsu.union(2, 4);
+
+        System.out.println(dsu.components());
+        System.out.println(dsu.getDsuOps());
+
     }
 }

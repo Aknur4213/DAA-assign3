@@ -1,33 +1,35 @@
 
-import daa.algorithms.Kosaraju;
-import daa.algorithms.SCCResult;
+import daa.algorithms.DagResult;
+import daa.algorithms.DagShortPath;
 import daa.graph.Graph;
+
+import java.util.Arrays;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Graph graph = new Graph(5, true);
+        Graph graph = new Graph(3, true);
 
-        graph.addEdge(0, 1, 1);
-        graph.addEdge(1, 2, 1);
-        graph.addEdge(2, 0, 1);
+        graph.addEdge(0, 1, 2);
+        graph.addEdge(1, 2, 3);
+        graph.addEdge(2, 0, 4);
 
-        graph.addEdge(2, 3, 1);
+        DagResult result = DagShortPath.run(graph);
 
-        graph.addEdge(3, 4, 1);
-        graph.addEdge(4, 3, 1);
+        System.out.println(
+                "Distances: " + Arrays.toString(result.dist));
 
-        SCCResult result = Kosaraju.run(graph);
+        System.out.println(
+                "Parents: " + Arrays.toString(result.parent));
 
-        System.out.println("SCC count: " + result.count);
-        System.out.println("Edge scans: " + result.edgeScans);
-        System.out.println("Max stack depth: " + result.maxDepth);
+        System.out.println(
+                "Path to 3: " + result.pathTo(3));
 
-        for (int v = 0; v < graph.size(); v++) {
-            System.out.println(
-                    "Vertex " + v + ": SCC " + result.component[v]
-            );
-        }
+        System.out.println(
+                "Sum of distances: " + result.sumDistances());
+
+        System.out.println(
+                "Edge scans: " + result.edgeScans);
     }
 }

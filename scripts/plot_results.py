@@ -79,10 +79,29 @@ def setup_plot(title, ylabel, log_y=False):
     plt.grid(True, which="both", alpha=0.25)
 
 
-def save_plot(filename):
-    plt.legend(fontsize=9, ncol=2)
+def save_plot(filename, legend_location="best", legend_below=False):
+    if legend_below:
+        plt.legend(
+            loc="upper center",
+            bbox_to_anchor=(0.5, -0.12),
+            ncol=5,
+            fontsize=9
+        )
+    else:
+        plt.legend(
+            loc=legend_location,
+            fontsize=9,
+            ncol=2
+        )
+
     plt.tight_layout()
-    plt.savefig(PLOT_DIR / filename, dpi=200)
+
+    plt.savefig(
+        PLOT_DIR / filename,
+        dpi=200,
+        bbox_inches="tight"
+    )
+
     plt.close()
 
     print(f"Saved {filename}")
@@ -130,6 +149,7 @@ def plot_scans_per_edge(rows):
             data = get_series(rows, algorithm, density)
 
             x = [row["n"] for row in data]
+
             y = [
                 row["edge_scans"] / row["m"]
                 for row in data
@@ -143,7 +163,11 @@ def plot_scans_per_edge(rows):
                 label=f"{algorithm} ({density}n)"
             )
 
-    save_plot("scans_per_edge.png")
+    # Legend below the graph
+    save_plot(
+        "scans_per_edge.png",
+        legend_below=True
+    )
 
 
 def plot_kruskal_share(rows):
@@ -156,6 +180,7 @@ def plot_kruskal_share(rows):
         data = get_series(rows, "Kruskal", density)
 
         x = [row["n"] for row in data]
+
         y = [
             row["edge_scans"] / row["m"]
             for row in data
@@ -171,7 +196,11 @@ def plot_kruskal_share(rows):
 
     plt.ylim(0, 1.05)
 
-    save_plot("kruskal_edge_share.png")
+    # Legend in the lower-right corner
+    save_plot(
+        "kruskal_edge_share.png",
+        legend_location="lower right"
+    )
 
 
 def log_log_slope(data, value_function):
@@ -201,10 +230,13 @@ def print_slopes(rows):
             data = get_series(rows, algorithm, density)
 
             slope = log_log_slope(
-                data, lambda row: row["edge_scans"]
+                data,
+                lambda row: row["edge_scans"]
             )
 
-            print(f"{algorithm} ({density}n): {slope:.3f}")
+            print(
+                f"{algorithm} ({density}n): {slope:.3f}"
+            )
 
     for density in [4, 20]:
         data = get_series(rows, "Kruskal", density)
@@ -218,7 +250,10 @@ def print_slopes(rows):
             )
         )
 
-        print(f"Kruskal total operations ({density}n): {slope:.3f}")
+        print(
+            f"Kruskal total operations ({density}n): "
+            f"{slope:.3f}"
+        )
 
 
 def main():

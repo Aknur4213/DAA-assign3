@@ -29,12 +29,21 @@ public class DSU {
         checkIndex(x);
         findCalls++;
 
-        while (parent[x] != x) {
-            x = parent[x];
+        int root = x;
+
+        while (parent[root] != root) {
+            root = parent[root];
         }
 
-        return x;
+        while (parent[x] != x) {
+            int next = parent[x];
+            parent[x] = root;
+            x = next;
+        }
+
+        return root;
     }
+
 
     public boolean union(int x, int y) {
         int rootX = find(x);

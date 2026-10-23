@@ -1,28 +1,25 @@
-import daa.algorithms.DSU;
 
-import java.io.FileNotFoundException;
+import daa.algorithms.Kruskal;
+import daa.algorithms.MSTResult;
+import daa.graph.Graph;
 
 public class Main {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
+
+        Graph graph = new Graph(4, false);
+
+        graph.addEdge(0, 0, 1);  // Self-loop
+        graph.addEdge(0, 1, 8);
+        graph.addEdge(0, 1, 3);  // Parallel edge
+        graph.addEdge(1, 2, 4);
 
 
-        DSU dsu = new DSU(5);
+        MSTResult result = Kruskal.run(graph);
 
-        System.out.println(dsu.components());
-
-        dsu.union(0, 1);
-        dsu.union(1, 2);
-        dsu.union(3, 4);
-
-        System.out.println(dsu.components());
-        System.out.println(dsu.find(0) == dsu.find(2));
-        System.out.println(dsu.find(0) == dsu.find(4));
-
-        dsu.union(2, 4);
-
-        System.out.println(dsu.components());
-        System.out.println(dsu.getDsuOps());
-
+        System.out.println("MST weight: " + result.totalWeight);
+        System.out.println("Edges selected: " + result.treeEdges.size());
+        System.out.println("Components: " + result.components);
+        System.out.println("Edge scans: " + result.edgeScans);
     }
 }
